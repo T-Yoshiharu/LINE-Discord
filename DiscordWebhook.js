@@ -1,6 +1,6 @@
-function sendDiscordMessage(name, message) {
+function sendDiscordMessage(name, message, json) {
   // ウェブフック
-  var webhookURL = "https://discord.com/api/webhooks/1292369311469408328/SH1tSGYxtcRFs_QzLP8JWbSQ8-7Ofm9FgqlRtyl1ehpmGfa1xHfRZ-fs0FdmB8D7S9GP";
+  var webhookURL = json.Discord_hook;
   // Discord webhookに投げるメッセージの内容
   var options = {
     "content": name + " ; " + message

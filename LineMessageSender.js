@@ -1,5 +1,10 @@
+// APIのキーやURLをJSONファイルから読み込む
+const file = DriveApp.getFileById("1DeWtJjEuEhN-_PMQKO3YopuqfNOhNF-s");
+const jsonStr = file.getBlob().getDataAsString("UTF-8");
+const IDjson = JSON.parse(jsonStr);
+
 // LINEのアクセストークン
-var channel_access_token = "I4gUXun1AD+GhXnGVYb7dkGVTzSoOivlW8OvzM30QbBdotjPHDWPF1GTuv5o4/PMaMmHTc4wBGVCGypPH4ROuZxEf33glVoCZkODhrsqFhgZELIhznBwBJ9nuqGr0poSGUeMCbILlHhwufI/o+rdJQdB04t89/1O/w1cDnyilFU="
+var channel_access_token = IDjson.LINE_m_api;
 // 
 var group_ID = "グループID(後で設定します)";
 
@@ -47,7 +52,7 @@ function sendToDiscord(e) {
   if (userID == "Ubd780605663d70bcf6555e5dfc9573ef") {
     name = "### " + name;
   }
-  sendDiscordMessage(name, message);
+  sendDiscordMessage(name, message, IDjson);
   // LINEにステータスコード200を返す(これがないと動かない)
   return response.getResponseCode();
 }
