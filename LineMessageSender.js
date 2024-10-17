@@ -5,7 +5,7 @@ const IDjson = JSON.parse(jsonStr);
 
 // LINEのアクセストークン
 var channel_access_token = IDjson.LINE_m_api;
-// 
+//
 var group_ID = "グループID(後で設定します)";
 
 function doPost(e) {
@@ -32,8 +32,8 @@ function sendToDiscord(e) {
       "Authorization": "Bearer " + channel_access_token
     }
   };
-  var userID = e.source.userId;
-  var groupid_tmp = e.source.groupId;
+  var userID = e.source.userId; //ユーザID
+  var groupid_tmp = e.source.groupId; //グループID
 
   // LINEにユーザープロフィールリクエストを送信(返り値はJSON形式)
   try {
@@ -49,7 +49,7 @@ function sendToDiscord(e) {
   // レスポンスからユーザーのディスプレイネームを抽出
   var name = JSON.parse(response.getContentText()).displayName;
   // 自分のメッセージだけ表示を変える
-  if (userID == "Ubd780605663d70bcf6555e5dfc9573ef") {
+  if (userID == IDjson.MyID) {
     name = "### " + name;
   }
   sendDiscordMessage(name, message, IDjson);
