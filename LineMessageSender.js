@@ -52,8 +52,8 @@ function sendToDiscord(e) {
   if (e.message.type === 'image') {
     // 画像バイナリデータを取得
     const image = UrlFetchApp.fetch('https://api-data.line.me/v2/bot/message/' + messageID + '/content', requestHeader);
-    const gyazo = JSON.parse(gyazoup(image.getBlob()));
-    message = gyazo;
+    const gyazo = JSON.parse(gyazoup(image.getBlob(), IDjson));
+    message = gyazo.url;
   }
 
   // レスポンスからユーザーのディスプレイネームを抽出
