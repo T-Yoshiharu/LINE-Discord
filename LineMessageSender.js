@@ -34,6 +34,7 @@ function sendToDiscord(e) {
   };
   var userID = e.source.userId; //ユーザID
   var groupid_tmp = e.source.groupId; //グループID
+  let messageID = e.message.id; //メッセージID
 
   // LINEにユーザープロフィールリクエストを送信(返り値はJSON形式)
   try {
@@ -46,6 +47,15 @@ function sendToDiscord(e) {
   }
 
   var message = e.message.text;
+
+  // 画像を送るための処理
+  if (e.message.type === 'image') {
+    // 画像バイナリデータを取得
+    const image = UrlFetchApp.fetch('https://api-data.line.me/v2/bot/message/' + messageID + '/content', requestHeader);
+    const gyazo = JSON.parse(gyazoup(image.getBlob()));
+    message = gyazo;
+  }
+
   // レスポンスからユーザーのディスプレイネームを抽出
   var name = JSON.parse(response.getContentText()).displayName;
   // 自分のメッセージだけ表示を変える
