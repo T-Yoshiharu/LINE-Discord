@@ -36,6 +36,16 @@ function sendToDiscord(e) {
   var groupid_tmp = e.source.groupId; //グループID
   let messageID = e.message.id; //メッセージID
 
+  let groupName
+
+  // グループIDからグループ名の指定
+  try {
+    groupName = IDjson.LINE[groupid_tmp];
+  } catch {
+    // リストに登録が無い場合のデフォルト
+    groupName = "Haru";
+  }
+
   // LINEにユーザープロフィールリクエストを送信(返り値はJSON形式)
   try {
     // グループの場合
@@ -62,7 +72,7 @@ function sendToDiscord(e) {
   if (userID == IDjson.MyID) {
     name = "### " + name;
   }
-  sendDiscordMessage(name, message, IDjson);
+  sendDiscordMessage(name, message, IDjson, groupName);
   // LINEにステータスコード200を返す(これがないと動かない)
   return response.getResponseCode();
 }
