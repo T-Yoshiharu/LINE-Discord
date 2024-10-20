@@ -47,13 +47,21 @@ function sendToDiscord(e) {
   }
 
   var message = e.message.text;
+  // メッセージ形式によってmessageの内容を作成
+  switch (e.message.type) {
+    case 'text': //テキストメッセージ
+      message = e.message.text;
+      break;
 
-  // 画像を送るための処理
-  if (e.message.type === 'image') {
-    // 画像バイナリデータを取得
-    const image = UrlFetchApp.fetch('https://api-data.line.me/v2/bot/message/' + messageID + '/content', requestHeader);
-    const gyazo = JSON.parse(gyazoup(image.getBlob(), IDjson));
-    message = gyazo.url;
+    case 'image': //画像メッセージ
+      // 画像バイナリデータを取得
+      const image = UrlFetchApp.fetch('https://api-data.line.me/v2/bot/message/' + messageID + '/content', requestHeader);
+      const gyazo = JSON.parse(gyazoup(image.getBlob(), IDjson));
+      message = gyazo.url;
+      break;
+
+    default:
+      break;
   }
 
   // レスポンスからユーザーのディスプレイネームを抽出
