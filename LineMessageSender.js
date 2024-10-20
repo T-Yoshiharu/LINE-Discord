@@ -42,8 +42,12 @@ function sendToDiscord(e) {
   try {
     groupName = IDjson.LINE[groupid_tmp];
   } catch {
-    // リストに登録が無い場合のデフォルト
-    groupName = "Haru";
+    // リストに登録が無い場合のデフォルト動作
+    groupName = "Unknown";
+
+    let response = UrlFetchApp.fetch("https://api.line.me/v2/bot/group/" + groupid_tmp + "/summary", requestHeader)
+    let gName = JSON.parse(response.getContentText()).groupName
+    sendDiscordMessage("グループ名: " + gName, "グループID: " + groupid_tmp, IDjson, "IDs") //グループ名とIDを通知
   }
 
   // LINEにユーザープロフィールリクエストを送信(返り値はJSON形式)
