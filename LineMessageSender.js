@@ -36,7 +36,7 @@ function sendToDiscord(e) {
   var groupid_tmp = e.source.groupId; //グループID
   let messageID = e.message.id; //メッセージID
 
-  let groupName
+  let groupName;
 
   // グループIDからグループ名の指定
   try {
