@@ -39,16 +39,30 @@ function sendToDiscord(e) {
   let groupName;
 
   // グループIDからグループ名の指定
-  try {
-    groupName = IDjson.LINE[groupid_tmp];
-  } catch {
-    // リストに登録が無い場合のデフォルト動作
-    groupName = "Unknown";
+  switch (e.source.type) {
+    case "user":
+      try {
+        groupName = IDjson.LINE[userID];
+      } catch {
+        var response = UrlFetchApp.fetch("https://api.line.me/v2/bot/profile/" + userID, requestHeader);
+        var gName = JSON.parse(response.getContentText()).displayName;
+        sendDiscordMessage("ユーザ名: " + gName, "ユーザID: " + userID, IDjson, "IDs") //ユーザ名とIDを通知
+      }
+      break;
+    case "group":
+      try {
+        groupName = IDjson.LINE[groupid_tmp];
+      } catch {
+        // リストに登録が無い場合のデフォルト動作
+        groupName = "Unknown";
 
-    let response = UrlFetchApp.fetch("https://api.line.me/v2/bot/group/" + groupid_tmp + "/summary", requestHeader)
-    let gName = JSON.parse(response.getContentText()).groupName
-    sendDiscordMessage("グループ名: " + gName, "グループID: " + groupid_tmp, IDjson, "IDs") //グループ名とIDを通知
+        let response = UrlFetchApp.fetch("https://api.line.me/v2/bot/group/" + groupid_tmp + "/summary", requestHeader)
+        let gName = JSON.parse(response.getContentText()).groupName
+        sendDiscordMessage("グループ名: " + gName, "グループID: " + groupid_tmp, IDjson, "IDs") //グループ名とIDを通知
+      }
+      break;
   }
+  // 後で関数化してコードをきれいにする!!
 
   // LINEにユーザープロフィールリクエストを送信(返り値はJSON形式)
   try {
@@ -73,7 +87,7 @@ function sendToDiscord(e) {
   // レスポンスからユーザーのディスプレイネームを抽出
   var name = JSON.parse(response.getContentText()).displayName;
   // 自分のメッセージだけ表示を変える
-  if (userID == IDjson.MyID) {
+  if (userID == IDjson.MyLINE_ID) {
     name = "### " + name;
   }
   sendDiscordMessage(name, message, IDjson, groupName);
