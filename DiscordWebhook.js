@@ -1,12 +1,12 @@
 function sendDiscordMessage(name, message, json) {
   // ウェブフック
-  var webhookURL = json.Discord_hook;
+  let webhookURL = json.Discord_hook;
 
   // Discord webhookに投げるメッセージの内容
   // 自分の個人メンションがある場合はメンションを付ける
   if (message.includes("@Haru")) {
     var options = {
-      "content": `<@${json.MyDiscord_ID}>\n` + name + " ; " + message
+      "content": `<@${json.MyIDs.MyDiscord_ID}>\n` + name + " ; " + message
     };
   } else {
     var options = {
