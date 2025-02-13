@@ -6,11 +6,11 @@ function sendDiscordMessage(name, message, json, groupN) {
   // 自分の個人メンションがある場合はメンションを付ける
   if (message.includes("@Haru")) {
     var options = {
-      "content": `<@${json.MyIDs.MyDiscord_ID}>\n` + name + " ; " + message
+      "content": `<@${json.MyIDs.MyDiscord_ID}>\n` + `${name} ; \n${message}\n---`
     };
   } else {
     var options = {
-      "content": name + " ; " + message
+      "content": `${name} ;\n${message}\n---`
     };
   };
 
