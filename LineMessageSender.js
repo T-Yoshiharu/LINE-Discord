@@ -4,7 +4,8 @@ const jsonStr = file.getBlob().getDataAsString("UTF-8");
 const IDjson = JSON.parse(jsonStr);
 
 // LINEのアクセストークン
-var channel_access_token = IDjson.LINE_m_api;
+const channel_access_token = IDjson.LINE_m_api;
+const myID = IDjson.MyIDs.MyLINE_ID;
 //
 var group_ID = "グループID(後で設定します)";
 
@@ -91,13 +92,23 @@ function sendToDiscord(e) {
       break;
   }
 
+  // 自分がメンションされているかの判定
+  let mentioned = false
+  var mention_list = e.message.mention.mentionees;
+  if (mention_list != undefined) {
+    let me = mention_list.find(m => m.userId == myID)
+    if (me != undefined) {
+      mentioned = true;
+    }
+  }
+
   // レスポンスからユーザーのディスプレイネームを抽出
   var name = JSON.parse(response.getContentText()).displayName;
   // 自分のメッセージだけ表示を変える
-  if (userID == IDjson.MyIDs.MyLINE_ID) {
+  if (userID == myID) {
     name = "### " + name;
   }
-  sendDiscordMessage(name, message, IDjson, groupName);
+  sendDiscordMessage(name, message, IDjson, groupName, mentioned);
   // LINEにステータスコード200を返す(これがないと動かない)
   return response.getResponseCode();
 }
