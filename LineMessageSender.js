@@ -94,10 +94,11 @@ function sendToDiscord(e) {
 
   // 自分がメンションされているかの判定
   let mentioned = false
-  var mention_list = e.message.mention.mentionees;
-  if (mention_list != undefined) {
-    let me = mention_list.find(m => m.userId == myID)
-    if (me != undefined) {
+  if (e.message.mention != undefined) {
+    var mentionees = e.message.mention.mentionees;
+    let mention_list = [];
+    mentionees.forEach(function (value) { mention_list.push(value.userId); })
+    if (mention_list.includes(myID)) {
       mentioned = true;
     }
   }
