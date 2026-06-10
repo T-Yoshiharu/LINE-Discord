@@ -1,3 +1,6 @@
+const SCRIPT_PROPERTIES = PropertiesService.getScriptProperties();
+const discordProxyDomain = SCRIPT_PROPERTIES.getProperty("DISCORD-PROXY-DOMAIN")
+
 function sendDiscordMessage(name, message, json, groupN, mention) {
   // ウェブフック
   var webhookURL = json.Discord[groupN];
@@ -14,9 +17,15 @@ function sendDiscordMessage(name, message, json, groupN, mention) {
     };
   };
 
+  // DiscordのWebhookURLをプロキシのURLに変換
+  const proxiedWebhookUrl = webhookURL.replace(
+    'discord.com',
+    discordProxyDomain
+  );
+
   // データを作って投げる
   var response = UrlFetchApp.fetch(
-    webhookURL,
+    proxiedWebhookUrl,
     {
       method: "POST",
       contentType: "application/json",
